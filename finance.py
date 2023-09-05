@@ -1,11 +1,15 @@
 import pandas as pd
 import numpy as np
 import scipy.stats
-from scipy.stats import norm
+from scipy.stats import norm,gaussian_kde
 from scipy.optimize import minimize
 import statsmodels.api as sm
 import yfinance as yf
 import matplotlib.pyplot as plt
+import statistics
+import seaborn as sns
+from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.stattools import adfuller
 
 
 def plot_chart(prices,etfs,symbol):
@@ -66,6 +70,10 @@ def annualize_vol(r, periods_per_year):
 
     return r.std()*(periods_per_year**0.5)
 
+def annualize_semistddev(r, periods_per_year):
+
+    return r[r<r.mean()].std()*(periods_per_year**0.5)
+
 
 def sharpe_ratio(r, riskfree_rate, periods_per_year):
     """
@@ -83,11 +91,16 @@ def is_normal(r, level=0.01):
     Test is applied at the 1% level by default
     Returns True if the hypothesis of normality is accepted, False otherwise
     """
+    
+    print('Applying the Jarque-Bera Test -\n')
     if isinstance(r, pd.DataFrame):
         return r.aggregate(is_normal)
     else:
         statistic, p_value = scipy.stats.jarque_bera(r)
-        return p_value > level
+        if p_value > level:
+            print('Test passed. Data is normal')
+        else:
+            print('Test failed. Data is not normal')
 
 
 def drawdown(return_series: pd.Series):
@@ -372,6 +385,7 @@ def summary_stats(r, periods=12 ,riskfree_rate=0.03):
     """
     ann_r = r.aggregate(annualize_rets, periods_per_year=periods)
     ann_vol = r.aggregate(annualize_vol, periods_per_year=periods)
+    ann_sstd=r.aggregate(annualize_semistddev,periods_per_year=periods)
     ann_sr = r.aggregate(sharpe_ratio, riskfree_rate=riskfree_rate, periods_per_year=periods)
     dd = r.aggregate(lambda r: drawdown(r).Drawdown.min())
     skew = r.aggregate(skewness)
@@ -381,6 +395,7 @@ def summary_stats(r, periods=12 ,riskfree_rate=0.03):
     return pd.DataFrame({
         "Annualized Return": ann_r,
         "Annualized Vol": ann_vol,
+        "Annualized Semi-deviation":ann_sstd,
         "Skewness": skew,
         "Kurtosis": kurt,
         "Cornish-Fisher VaR (5%)": cf_var5,
@@ -646,3 +661,107 @@ def show_cppi(n_scenarios=50, mu=0.07, sigma=0.15, m=3, floor=0., riskfree_rate=
     if (floor > 0.01):
         hist_ax.axhline(y=start*floor, ls="--", color="red", linewidth=3)
         hist_ax.annotate(f"Violations: {n_failures} ({p_fail*100:2.2f}%)\nE(shortfall)=${e_shortfall:2.2f}", xy=(.7, .7), xycoords='axes fraction',fontsize=24)
+
+        
+def plot_autocorrelation(data,maxlags=10,title='Autocorrelation'):
+    diff_data=[data[i]-data[i-1] for i in range(1,len(data))]
+    plt.figure(figsize=(11,6))
+    plt.acorr(diff_data, maxlags = 10)
+    plt.grid(True)
+    plt.title(title)
+    plt.show()
+    
+def VaR(data):
+    V1=round(statistics.mean(data)-1.65*statistics.stdev(data),3)
+    V2=round(statistics.mean(data)-1.96*statistics.stdev(data),3)
+    V3=round(statistics.mean(data)-2.58*statistics.stdev(data),3)
+    
+    return [V1,V2,V3]
+
+def plot_VaR(returns):
+    
+    kde=gaussian_kde(returns)
+    VaRs=VaR(returns)
+    kde_y0=kde(VaRs[0])
+    kde_y1=kde(VaRs[1])
+    kde_y2=kde(VaRs[2])
+    
+    plt.figure(figsize=(12,7))
+    plt.vlines(VaRs[0],ymin=0,ymax=kde_y0,color='purple',label='10% Var')
+    plt.vlines(VaRs[1],ymin=0,ymax=kde_y1,color='red',label='5% Var')
+    plt.vlines(VaRs[2],ymin=0,ymax=kde_y2,color='green',label='1% Var')
+    plt.title('VaR Plot')
+    plt.legend()
+    plt.grid(True)
+    sns.kdeplot(returns,fill=True)
+    
+def plot_moving_avg(data,p1=7,p2=15):
+    plt.figure(figsize=(15,8))
+    plt.plot(data)
+    plt.plot(data.ewm(span=p1).mean(),label=p1)
+    plt.plot(data.ewm(span=p2).mean(),label=p2)
+    plt.legend()
+    plt.title('Exponential Moving Average')
+    plt.show()
+    
+def plot_data(data,title):
+    plt.figure(figsize=(15,8))
+    plt.plot(data)
+    plt.grid(True)
+    plt.title(title)
+    plt.show()
+    
+def check_seasonality(data):
+    decompose_result_mult = seasonal_decompose(data,model='multiplicative')
+    trend = decompose_result_mult.trend
+    seasonal = decompose_result_mult.seasonal
+    residual = decompose_result_mult.resid
+    plt.figure(figsize=(12,12))
+
+    # obeserved data
+    plt.subplot(411)
+    plt.plot(data)
+    plt.grid(linewidth=2, alpha=0.3)
+    plt.ylabel('Price')
+
+    # seasonal component
+    plt.subplot(412)
+    plt.plot(seasonal)
+    plt.grid(linewidth=2, alpha=0.3)
+    plt.ylabel('SEASONAL')
+
+    # trend component
+    plt.subplot(413)
+    plt.plot(trend)
+    plt.grid(linewidth=2, alpha=0.3)
+    plt.ylabel('TREND')
+
+    # random component
+    plt.subplot(414)
+    plt.plot(residual)
+    plt.grid(linewidth=2, alpha=0.3)
+    plt.ylabel('Residual')
+    
+def check_stationarity(data):
+    print("Observations of Dickey-fuller test")
+    dftest = adfuller(data,autolag='AIC')
+    dfoutput=pd.Series(dftest[0:4],index=['Test Statistic','p-value','#lags used','number of observations used'])
+    for key,value in dftest[4].items():
+        dfoutput['critical value (%s)'%key]= round(value,3)
+    print(dfoutput)
+    
+    print('\nRolling statistics test-')
+    rmean=data.rolling(window=5).mean()
+    rstd=data.rolling(window=5).std()
+
+    plt.figure(figsize=(10,6))
+    mean= plt.plot(rmean , color='red',label='Rolling Mean')
+    plt.legend(loc='best')
+    plt.title("Rolling mean")
+    plt.show()
+
+    plt.figure(figsize=(10,6))
+    std=plt.plot(rstd,color='blue',label = 'Rolling Standard Deviation')
+    plt.legend(loc='best')
+    plt.title("Rolling standard deviation")
+    plt.show()
