@@ -1,0 +1,53 @@
+Index,Symbol,Region,Asset class
+S&P500,^GSPC,US,Equity
+Nikkei 225,^N225,Japan,Equity
+Russell 2000,^RUT,US,Equity
+Euronext 100,^N100,Europe,Equity
+Hang Seng index,^HSI,China,Equity
+Vanguard FTSE Emerging Markets Index Fund ETF Shares,VWO,Emerging Market,Equity
+iShares MSCI India ETF,INDA,Emerging Market,Equity
+Alpha Architect Freedom 100 Emerging Markets ETF,FRDM,Emerging Market,Equity
+BMO MSCI Emerging Markets Index ETF,ZEM.TO,Emerging Market,Equity
+First Trust S&P REIT Index Fund,FRI,US,Real Estate
+Neuberger Berman Real Estate Securities Income Fund Inc.,NRO,US,Real Estate
+Tokyo Stock Exchange REIT,2556.T,Japan,Real Estate
+iShares International Developed Real Estate ETF,IFGL,Ex-US,Real Estate
+WisdomTree Global ex-US Real Estate Fund,DRW,Global,Real Estate
+iShares 1-3 Year Treasury Bond ETF,SHY,US,Fixed Income
+iShares 0-5 Year High Yield Corporate Bond ETF,SHYG,US,Fixed Income
+Vanguard Long-Term Bond Index Fund ETF Shares,BLV,US,Fixed Income
+iShares Short-Term National Muni Bond ETF,SUB,US,Fixed Income
+Vanguard Funds Public Limited Company - Vanguard U.K. Gilt UCITS ETF,VGOV.L,UK,Fixed Income
+SSgA SPDR ETFs Europe I Public Limited Company - SPDR Barclays 1-5 Year Gilt UCITS ETF,GLTS.L,Europe,Fixed Income
+iShares France Government Bond UCITS ETF,IFRB.L,France,Fixed Income
+iShares 1-3 Year International Treasury Bond ETF,ISHG,SW/JP/IR,Fixed Income
+iShares Germany Government Bond UCITS ETF,SDEU.L,German,Fixed Income
+Germany Government Bond UCITS ETF,XBTR.SW,German,Fixed Income
+PIMCO Investment Grade Corporate Bond Index,CORP,US,Fixed Income
+iShares 5-10 Year Investment Grade Corporate Bond ETF,IGIB,US,Fixed Income
+Invesco Emerging Markets Sovereign Debt ETF,PCY,Emerging Market,Fixed Income
+Janus Henderson Mortgage-Backed Securities ETF,JMBS,US,MBS
+iPath S&P GSCI Total Return Index ETN,GSP,N/A,Commodities
+Lyxor Bloomberg Equal-weight Commodity ex-Agriculture UCITS ETF,CRBA.MI,N/A,Commodities
+Invesco DB Commodity Index Tracking Fund,DBC,N/A,Commodities
+Invesco DB Agriculture Fund,DBA,N/A,Commodities
+GraniteShares Gold Trust,BAR,N/A,Commodities
+ProShares Ultra Silver,AGQ,N/A,Commodities
+GraniteShares Platinum Trust,PLTM,N/A,Commodities
+Aberdeen Standard Physical Palladium Shares ETF,PALL,N/A,Commodities
+KraneShares Global Carbon ETF,KRBN,N/A,Commodities
+"United States Gasoline Fund, LP",UGA,N/A,Commodities
+SPDR S&P Oil & Gas Exploration & Production ETF,XOP,N/A,Commodities
+ProShares Ultra Bloomberg Crude Oil,UCO,N/A,Commodities
+Invesco CurrencyShares Swiss Franc Trust,FXF,Switzerland,Forex
+Invesco CurrencyShares Japanese Yen Trust,FXY,Japan,Forex
+Invesco CurrencyShares Euro Currency Trust,FXE,Europe,Forex
+Invesco CurrencyShares British Pound Sterling Trust,FXB,UK,Forex
+Invesco CurrencyShares Australian Dollar Trust,FXA,Australia,Forex
+WisdomTree Emerging Currency Strategy Fund,CEW,Emerging Markets,Forex
+WisdomTree Chinese Yuan Strategy Fund,CYB,China,Forex
+Invesco CurrencyShares Canadian Dollar Trust,FXC,Canada,Forex
+NBI Global Private Equity ETF,NGPE.TO,,Private Equity
+ProShares Global Listed Private Equity ETF,PEX,,Private Equity
+LPX Private Equity Swap UCITS ETF,XLPE.L,,Private Equity
+CMC Crypto 200 Index by Solacti,^CMC200,,Crypto
