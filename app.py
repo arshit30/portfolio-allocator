@@ -1,38 +1,42 @@
-from flask import Flask,render_template, request, redirect,url_for
+from flask import Flask,render_template, request, redirect,url_for,session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
-
-app.secret_key = 'your secret key'
- 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'your password'
-app.config['MYSQL_DB'] = 'geeklogin'
-
-mysql = MySQL(app)
+import mysql.connector
+import os
+import re
 
 app= Flask(__name__)
 
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="",
+  database="Credentials",
+)
+
+app.config['SECRET_KEY'] = os.urandom(12).hex()
+
+message=''
 @app.route('/')
 @app.route('/login', methods=['GET','POST'])
 def login():
+    message=''
     if request.method == 'POST':
         if 'username' in request.form and 'password' in request.form:
-        username = request.form['username']
-        password = request.form['password']
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE username = % s AND password = % s', (username, password, ))
-        account = cursor.fetchone()
-        if account:
-            session['loggedin'] = True
-            session['id'] = account['id']
-            session['username'] = account['username']
-            message = 'Logged in successfully !'
-            return render_template('index.html', message = message)
-            
-        else:
-            message = 'Invalid Credentials. Please try again.'
-            return redirect(url_for('home'))
+            username = request.form['username']
+            password = request.form['password']
+            cursor = mydb.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM user_credentials WHERE Username = %s AND Password = %s', (username, password, ))
+            account = cursor.fetchone()
+            if account:
+                session['loggedin'] = True
+                session['username'] = account[0]
+                message = 'Logged in successfully !'
+                return render_template('index.html', message = message)
+                
+            else:
+                message = 'Invalid Credentials. Please try again.'
+                return redirect(url_for('login'))
         
     return render_template('login.html', message=message)
 
@@ -43,8 +47,8 @@ def register():
         if 'username' in request.form and 'password' in request.form:
             username = request.form['username']
             password = request.form['password']
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM accounts WHERE username = % s', (username, ))
+            cursor = mydb.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM user_credentials WHERE Username = %s', (username,))
             account = cursor.fetchone()
             if account:
                 message = 'Account already exists !'
@@ -53,8 +57,8 @@ def register():
             elif not username or not password:
                 message = 'Please fill out the form !'
             else:
-                cursor.execute('INSERT INTO accounts VALUES (NULL, % s, % s)', (username, password, ))
-                mysql.connection.commit()
+                cursor.execute('INSERT INTO user_credentials VALUES (%s, %s)', (username, password,))
+                mydb.commit()
                 message = 'You have successfully registered !'
         elif request.method == 'POST':
             message = 'Please fill out the form !'
@@ -65,4 +69,4 @@ def register():
 
 
 
-app.run(host='0.0.0.0',port=5000)
+app.run(host='0.0.0.0',port=3306,debug=True)

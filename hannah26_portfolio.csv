@@ -1,0 +1,53 @@
+,Index,Symbol,Region,Asset class,Weightage (%)
+0,S&P500,^GSPC,US,Equity,0.3968253968253968
+1,Nikkei 225,^N225,Japan,Equity,0.3968253968253968
+2,Russell 2000,^RUT,US,Equity,0.3968253968253968
+3,Euronext 100,^N100,Europe,Equity,0.3968253968253968
+4,Hang Seng index,^HSI,China,Equity,0.3968253968253968
+5,Vanguard FTSE Emerging Markets Index Fund ETF Shares,VWO,Emerging Market,Equity,0.3968253968253968
+6,iShares MSCI India ETF,INDA,Emerging Market,Equity,0.3968253968253968
+7,Alpha Architect Freedom 100 Emerging Markets ETF,FRDM,Emerging Market,Equity,0.3968253968253968
+8,BMO MSCI Emerging Markets Index ETF,ZEM.TO,Emerging Market,Equity,0.3968253968253968
+9,First Trust S&P REIT Index Fund,FRI,US,Real Estate,0.3968253968253968
+10,Neuberger Berman Real Estate Securities Income Fund Inc.,NRO,US,Real Estate,0.3968253968253968
+11,Tokyo Stock Exchange REIT,2556.T,Japan,Real Estate,0.3968253968253968
+12,iShares International Developed Real Estate ETF,IFGL,Ex-US,Real Estate,0.3968253968253968
+13,WisdomTree Global ex-US Real Estate Fund,DRW,Global,Real Estate,0.3968253968253968
+14,iShares 1-3 Year Treasury Bond ETF,SHY,US,Fixed Income,0.3968253968253968
+15,iShares 0-5 Year High Yield Corporate Bond ETF,SHYG,US,Fixed Income,0.3968253968253968
+16,Vanguard Long-Term Bond Index Fund ETF Shares,BLV,US,Fixed Income,0.3968253968253968
+17,iShares Short-Term National Muni Bond ETF,SUB,US,Fixed Income,0.3968253968253968
+18,Vanguard Funds Public Limited Company - Vanguard U.K. Gilt UCITS ETF,VGOV.L,UK,Fixed Income,0.3968253968253968
+19,SSgA SPDR ETFs Europe I Public Limited Company - SPDR Barclays 1-5 Year Gilt UCITS ETF,GLTS.L,Europe,Fixed Income,0.3968253968253968
+20,iShares France Government Bond UCITS ETF,IFRB.L,France,Fixed Income,0.3968253968253968
+21,iShares 1-3 Year International Treasury Bond ETF,ISHG,SW/JP/IR,Fixed Income,0.3968253968253968
+22,iShares Germany Government Bond UCITS ETF,SDEU.L,German,Fixed Income,0.3968253968253968
+23,Germany Government Bond UCITS ETF,XBTR.SW,German,Fixed Income,0.3968253968253968
+24,PIMCO Investment Grade Corporate Bond Index,CORP,US,Fixed Income,0.3968253968253968
+25,iShares 5-10 Year Investment Grade Corporate Bond ETF,IGIB,US,Fixed Income,0.3968253968253968
+26,Invesco Emerging Markets Sovereign Debt ETF,PCY,Emerging Market,Fixed Income,0.3968253968253968
+27,Janus Henderson Mortgage-Backed Securities ETF,JMBS,US,MBS,0.3968253968253968
+28,iPath S&P GSCI Total Return Index ETN,GSP,,Commodities,0.3968253968253968
+29,Lyxor Bloomberg Equal-weight Commodity ex-Agriculture UCITS ETF,CRBA.MI,,Commodities,0.3968253968253968
+30,Invesco DB Commodity Index Tracking Fund,DBC,,Commodities,0.3968253968253968
+31,Invesco DB Agriculture Fund,DBA,,Commodities,0.3968253968253968
+32,GraniteShares Gold Trust,BAR,,Commodities,0.3968253968253968
+33,ProShares Ultra Silver,AGQ,,Commodities,0.3968253968253968
+34,GraniteShares Platinum Trust,PLTM,,Commodities,0.3968253968253968
+35,Aberdeen Standard Physical Palladium Shares ETF,PALL,,Commodities,0.3968253968253968
+36,KraneShares Global Carbon ETF,KRBN,,Commodities,0.3968253968253968
+37,"United States Gasoline Fund, LP",UGA,,Commodities,0.3968253968253968
+38,SPDR S&P Oil & Gas Exploration & Production ETF,XOP,,Commodities,0.3968253968253968
+39,ProShares Ultra Bloomberg Crude Oil,UCO,,Commodities,0.3968253968253968
+40,Invesco CurrencyShares Swiss Franc Trust,FXF,Switzerland,Forex,0.3968253968253968
+41,Invesco CurrencyShares Japanese Yen Trust,FXY,Japan,Forex,0.3968253968253968
+42,Invesco CurrencyShares Euro Currency Trust,FXE,Europe,Forex,0.3968253968253968
+43,Invesco CurrencyShares British Pound Sterling Trust,FXB,UK,Forex,0.3968253968253968
+44,Invesco CurrencyShares Australian Dollar Trust,FXA,Australia,Forex,0.3968253968253968
+45,WisdomTree Emerging Currency Strategy Fund,CEW,Emerging Markets,Forex,0.3968253968253968
+46,WisdomTree Chinese Yuan Strategy Fund,CYB,China,Forex,0.3968253968253968
+47,Invesco CurrencyShares Canadian Dollar Trust,FXC,Canada,Forex,0.3968253968253968
+48,NBI Global Private Equity ETF,NGPE.TO,,Private Equity,0.3968253968253968
+49,ProShares Global Listed Private Equity ETF,PEX,,Private Equity,0.3968253968253968
+50,LPX Private Equity Swap UCITS ETF,XLPE.L,,Private Equity,0.3968253968253968
+51,CMC Crypto 200 Index by Solacti,^CMC200,,Crypto,0.3968253968253968
