@@ -32,7 +32,7 @@ def login():
                 session['loggedin'] = True
                 session['username'] = account[0]
                 message = 'Logged in successfully !'
-                return render_template('index.html', message = message)
+                return render_template('user.html', message = message)
                 
             else:
                 message = 'Invalid Credentials. Please try again.'
@@ -64,9 +64,14 @@ def register():
             message = 'Please fill out the form !'
     return render_template('register.html', message = message)
 
-#@app.route('/User', methods=['GET','POST'])
-#def homepage():
-
+@app.route('/User', methods=['GET','POST'])
+def homepage():
+    if request.method == 'POST':
+        if request.form['create']:
+            print('create new portfolio')
+        elif request.form['view']:
+            print('view portfolio')
+    return render_template('user.html') 
 
 
 app.run(host='0.0.0.0',port=3306,debug=True)
