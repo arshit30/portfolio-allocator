@@ -4,6 +4,7 @@ import MySQLdb.cursors
 import mysql.connector
 import os
 import re
+import finance as fin
 
 app= Flask(__name__)
 
@@ -17,7 +18,6 @@ mydb = mysql.connector.connect(
 app.config['SECRET_KEY'] = os.urandom(12).hex()
 
 message=''
-@app.route('/')
 @app.route('/login', methods=['GET','POST'])
 def login():
     message=''
@@ -64,14 +64,29 @@ def register():
             message = 'Please fill out the form !'
     return render_template('register.html', message = message)
 
-@app.route('/User', methods=['GET','POST'])
+@app.route('/user', methods=['GET','POST'])
 def homepage():
     if request.method == 'POST':
-        if request.form['create']:
-            print('create new portfolio')
-        elif request.form['view']:
-            print('view portfolio')
+        values=list(request.form.values())
+        if values[0]=='create':
+            print('create selected')
+            return redirect(url_for('creator'))
+        elif values[0]=='view':
+            return render_template('view.html')
     return render_template('user.html') 
 
 
+@app.route('/create',methods=['GET','POST'])
+def creator():
+    if request.method=='POST':
+        strategy=request.form['strategy']
+        return redirect(url_for('port_strat',strat=strategy))
+        #strategy=request.args.getlist('strategy')
+    return render_template('create.html')
+    
+@app.route('/create/<strat>',methods=['GET','POST'])
+def port_strat(strat):
+    if request.method=='GET':
+        print(strat)
+    return strat
 app.run(host='0.0.0.0',port=3306,debug=True)

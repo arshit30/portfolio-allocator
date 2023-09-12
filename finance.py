@@ -74,6 +74,9 @@ def annualize_semistddev(r, periods_per_year):
 
     return r[r<r.mean()].std()*(periods_per_year**0.5)
 
+def rfr():
+    data = yf.download('^IRX',period='1d',interval='1d')  #get risk free rate by getting 3 month T-bill rate
+    return np.round(data['Close'][-1],4)/100
 
 def sharpe_ratio(r, riskfree_rate, periods_per_year):
     """
@@ -226,7 +229,7 @@ def msr(riskfree_rate, er, cov):
     """
     n = er.shape[0]
     init_guess = np.repeat(1/n, n)
-    bounds = ((0.0, 1.0),) * n 
+    bounds = ((0.01, 0.08),)*n
     # construct the constraints
     weights_sum_to_1 = {'type': 'eq',
                         'fun': lambda weights: np.sum(weights) - 1

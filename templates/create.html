@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> Creator </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">             
+    </head>
+    <body>
+        <form method="POST">
+            <label for="strategy">Choose a portfolio strategy:</label>
+            <select name="strategy" id="strategy">
+                <option value="EW">Equally weighted</option>
+                <option value="MSR">Max sharpe ratio</option>
+                <option value="GMV">Minimum volatility</option>
+                <option value="ERW">Equally risk weighted</option>
+            </select>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
