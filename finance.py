@@ -425,53 +425,7 @@ def gbm(n_years = 10, n_scenarios=1000, mu=0.07, sigma=0.15, steps_per_year=12, 
     rets_plus_1[0] = 1
     ret_val = s_0*pd.DataFrame(rets_plus_1).cumprod() if prices else rets_plus_1-1
     return ret_val
-
-
-def portfolio_tracking_error(weights, ref_r, bb_r):
-    """
-    returns the tracking error between the reference returns
-    and a portfolio of building block returns held with given weights
-    """
-    return tracking_error(ref_r, (weights*bb_r).sum(axis=1))
                          
-def style_analysis(dependent_variable, explanatory_variables):
-    """
-    Returns the optimal weights that minimizes the Tracking error between
-    a portfolio of the explanatory variables and the dependent variable
-    """
-    n = explanatory_variables.shape[1]
-    init_guess = np.repeat(1/n, n)
-    bounds = ((0.0, 1.0),) * n # an N-tuple of 2-tuples!
-    # construct the constraints
-    weights_sum_to_1 = {'type': 'eq',
-                        'fun': lambda weights: np.sum(weights) - 1
-    }
-    solution = minimize(portfolio_tracking_error, init_guess,
-                       args=(dependent_variable, explanatory_variables,), method='SLSQP',
-                       options={'disp': False},
-                       constraints=(weights_sum_to_1,),
-                       bounds=bounds)
-    weights = pd.Series(solution.x, index=explanatory_variables.columns)
-    return weights
-
-
-def ff_analysis(r, factors):
-    """
-    Returns the loadings  of r on the Fama French Factors
-    which can be read in using get_fff_returns()
-    the index of r must be a (not necessarily proper) subset of the index of factors
-    r is either a Series or a DataFrame
-    """
-    if isinstance(r, pd.Series):
-        dependent_variable = r
-        explanatory_variables = factors.loc[r.index]
-        tilts = regress(dependent_variable, explanatory_variables).params
-    elif isinstance(r, pd.DataFrame):
-        tilts = pd.DataFrame({col: ff_analysis(r[col], factors) for col in r.columns})
-    else:
-        raise TypeError("r must be a Series or a DataFrame")
-    return tilts
-
 def weight_ew(r, cap_weights=None, max_cw_mult=None, microcap_threshold=None, **kwargs):
     """
     Returns the weights of the EW portfolio based on the asset returns "r" as a DataFrame
@@ -659,23 +613,6 @@ def VaR(data):
     V3=round(statistics.mean(data)-2.58*statistics.stdev(data),3)
     
     return [V1,V2,V3]
-
-def plot_VaR(returns):
-    
-    kde=gaussian_kde(returns)
-    VaRs=VaR(returns)
-    kde_y0=kde(VaRs[0])
-    kde_y1=kde(VaRs[1])
-    kde_y2=kde(VaRs[2])
-    
-    plt.figure(figsize=(12,7))
-    plt.vlines(VaRs[0],ymin=0,ymax=kde_y0,color='purple',label='10% Var')
-    plt.vlines(VaRs[1],ymin=0,ymax=kde_y1,color='red',label='5% Var')
-    plt.vlines(VaRs[2],ymin=0,ymax=kde_y2,color='green',label='1% Var')
-    plt.title('VaR Plot')
-    plt.legend()
-    plt.grid(True)
-    sns.kdeplot(returns,fill=True)
     
 def plot_moving_avg(data,p1=7,p2=15):
     plt.figure(figsize=(15,8))
@@ -693,57 +630,3 @@ def plot_data(data,title):
     plt.title(title)
     plt.show()
     
-def check_seasonality(data):
-    decompose_result_mult = seasonal_decompose(data,model='multiplicative')
-    trend = decompose_result_mult.trend
-    seasonal = decompose_result_mult.seasonal
-    residual = decompose_result_mult.resid
-    plt.figure(figsize=(12,12))
-
-    # obeserved data
-    plt.subplot(411)
-    plt.plot(data)
-    plt.grid(linewidth=2, alpha=0.3)
-    plt.ylabel('Price')
-
-    # seasonal component
-    plt.subplot(412)
-    plt.plot(seasonal)
-    plt.grid(linewidth=2, alpha=0.3)
-    plt.ylabel('SEASONAL')
-
-    # trend component
-    plt.subplot(413)
-    plt.plot(trend)
-    plt.grid(linewidth=2, alpha=0.3)
-    plt.ylabel('TREND')
-
-    # random component
-    plt.subplot(414)
-    plt.plot(residual)
-    plt.grid(linewidth=2, alpha=0.3)
-    plt.ylabel('Residual')
-    
-def check_stationarity(data):
-    print("Observations of Dickey-fuller test")
-    dftest = adfuller(data,autolag='AIC')
-    dfoutput=pd.Series(dftest[0:4],index=['Test Statistic','p-value','#lags used','number of observations used'])
-    for key,value in dftest[4].items():
-        dfoutput['critical value (%s)'%key]= round(value,3)
-    print(dfoutput)
-    
-    print('\nRolling statistics test-')
-    rmean=data.rolling(window=5).mean()
-    rstd=data.rolling(window=5).std()
-
-    plt.figure(figsize=(10,6))
-    mean= plt.plot(rmean , color='red',label='Rolling Mean')
-    plt.legend(loc='best')
-    plt.title("Rolling mean")
-    plt.show()
-
-    plt.figure(figsize=(10,6))
-    std=plt.plot(rstd,color='blue',label = 'Rolling Standard Deviation')
-    plt.legend(loc='best')
-    plt.title("Rolling standard deviation")
-    plt.show()
