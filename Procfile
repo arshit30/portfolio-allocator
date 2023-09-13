@@ -1,1 +1,1 @@
-web: gunicorn app:portfolio-creator
+web: gunicorn app:app
