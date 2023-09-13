@@ -10,10 +10,10 @@ import portfolio as pf
 app= Flask(__name__)
 
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="",
-  database="Credentials",
+  host="uyu7j8yohcwo35j3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+  user="ln90fus9zps3kf5c",
+  password="nm089pvb9w9821bx",
+  database="mr76786mt2aisvgx",
 )
 
 app.config['SECRET_KEY'] = os.urandom(12).hex()
@@ -27,7 +27,7 @@ def login():
             username = request.form['username']
             password = request.form['password']
             cursor = mydb.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM user_credentials WHERE Username = %s AND Password = %s', (username, password, ))
+            cursor.execute('SELECT * FROM users WHERE Username = %s AND Password = %s', (username, password, ))
             account = cursor.fetchone()
             if account:
                 session['loggedin'] = True
