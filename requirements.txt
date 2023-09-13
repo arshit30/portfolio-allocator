@@ -8,6 +8,5 @@ numpy
 plotly
 flask-mysqldb
 mysql-connector-python
-mysql-python
 mysqlclient
 ConfigParser
