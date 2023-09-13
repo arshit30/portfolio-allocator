@@ -4,17 +4,22 @@ import numpy as np
 import finance as fin
 import warnings
 
-dataset=pd.read_csv('ETFs.csv')
-symbols=fin.get_symbols(dataset)
+def data_collection():
+    
+    dataset=pd.read_csv('ETFs.csv')
+    symbols=fin.get_symbols(dataset)
 
-prices=fin.get_dataset(symbols)
-returns=prices.pct_change().dropna()
-ann_ret=fin.annualize_rets(returns,len(returns))
-risk_free_rate=fin.rfr()
+    prices=fin.get_dataset(symbols)
+    returns=prices.pct_change().dropna()
+    
+    return returns
+    
 
-def create_pf(returns,strategy):
+def create_pf(strategy):
 
+    returns=data_collection()
     ann_ret=fin.annualize_rets(returns,len(returns))
+    risk_free_rate=fin.rfr()
 
     if strategy=='EW':
         weights=np.repeat(1/len(ann_ret),len(ann_ret))
@@ -28,16 +33,23 @@ def create_pf(returns,strategy):
     weights=np.round(weights,4)
     return weights
 
-while True:
+def pf_results(weights,returns):
 
-    sts=input('Enter :')
-    weights=create_pf(returns,sts)
-    pf_ret=fin.portfolio_return(weights,ann_ret)
-    pf_vol=fin.portfolio_vol(weights,fin.cc_cov(returns))
+    ann_ret=fin.annualize_rets(returns,len(returns))
+    risk_free_rate=fin.rfr()
+
+    pf_ret=fin.portfolio_return(weights,ann_ret)*100
+    pf_vol=fin.portfolio_vol(weights,fin.cc_cov(returns))*100
     pf_sr=(pf_ret-risk_free_rate)/pf_vol
-    pf_dd=max(np.sum(weights*returns,axis=1).cummax())
-    print('Return:',pf_ret)
-    print('Vol:',pf_vol)
-    print('Sharpe ratio:',pf_sr)
-    print('Drawdown:',pf_dd)
+    pf_dd=max(np.sum(weights*returns,axis=1).cummax())*100
+
+    portfolio={
+        'Portfolio Returns':[pf_ret],
+        'Portfolio Volatility':[pf_vol],
+        'Sharpe Ratio': [pf_sr],
+        'Max drawdown': [pf_dd]
+    }
+
+    return portfolio
+    #return pd.DataFrame.from_dict(portfolio)
 

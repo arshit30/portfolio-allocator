@@ -5,6 +5,7 @@ import mysql.connector
 import os
 import re
 import finance as fin
+import portfolio as pf
 
 app= Flask(__name__)
 
@@ -81,12 +82,13 @@ def creator():
     if request.method=='POST':
         strategy=request.form['strategy']
         return redirect(url_for('port_strat',strat=strategy))
-        #strategy=request.args.getlist('strategy')
     return render_template('create.html')
     
 @app.route('/create/<strat>',methods=['GET','POST'])
 def port_strat(strat):
     if request.method=='GET':
-        print(strat)
-    return strat
+        data=pf.data_collection()
+        pf_weights=pf.create_pf(strategy=strat)
+        portfolio=pf.pf_results(weights=pf_weights,returns=data)
+    return portfolio
 app.run(host='0.0.0.0',port=3306,debug=True)
