@@ -10,3 +10,4 @@ flask-mysqldb
 mysql-connector-python
 mysqlclient
 ConfigParser
+gunicorn
