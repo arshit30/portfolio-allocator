@@ -49,7 +49,7 @@ def register():
             username = request.form['username']
             password = request.form['password']
             cursor = mydb.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM user_credentials WHERE Username = %s', (username,))
+            cursor.execute('SELECT * FROM users WHERE Username = %s', (username,))
             account = cursor.fetchone()
             if account:
                 message = 'Account already exists !'
@@ -58,7 +58,7 @@ def register():
             elif not username or not password:
                 message = 'Please fill out the form !'
             else:
-                cursor.execute('INSERT INTO user_credentials VALUES (%s, %s)', (username, password,))
+                cursor.execute('INSERT INTO users VALUES (%s, %s)', (username, password,))
                 mydb.commit()
                 message = 'You have successfully registered !'
         elif request.method == 'POST':
