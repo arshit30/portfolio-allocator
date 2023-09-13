@@ -3,13 +3,9 @@ import numpy as np
 import scipy.stats
 from scipy.stats import norm,gaussian_kde
 from scipy.optimize import minimize
-import statsmodels.api as sm
 import yfinance as yf
 import matplotlib.pyplot as plt
 import statistics
-import seaborn as sns
-from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.tsa.stattools import adfuller
 
 
 def plot_chart(prices,etfs,symbol):
@@ -430,23 +426,6 @@ def gbm(n_years = 10, n_scenarios=1000, mu=0.07, sigma=0.15, steps_per_year=12, 
     ret_val = s_0*pd.DataFrame(rets_plus_1).cumprod() if prices else rets_plus_1-1
     return ret_val
 
-                         
-
-def regress(dependent_variable, explanatory_variables, alpha=True):
-    """
-    Runs a linear regression to decompose the dependent variable into the explanatory variables
-    returns an object of type statsmodel's RegressionResults on which you can call
-       .summary() to print a full summary
-       .params for the coefficients
-       .tvalues and .pvalues for the significance levels
-       .rsquared_adj and .rsquared for quality of fit
-    """
-    if alpha:
-        explanatory_variables = explanatory_variables.copy()
-        explanatory_variables["Alpha"] = 1
-    
-    lm = sm.OLS(dependent_variable, explanatory_variables).fit()
-    return lm
 
 def portfolio_tracking_error(weights, ref_r, bb_r):
     """
