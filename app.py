@@ -1,4 +1,4 @@
-from flask import Flask,render_template, request, redirect,url_for,session
+from flask import Flask,render_template, request, redirect,url_for,session,jsonify
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import mysql.connector
@@ -6,8 +6,11 @@ import os
 import re
 import finance as fin
 import portfolio as pf
+from healthcheck import HealthCheck
+from test import *
 
 app= Flask(__name__)
+health = HealthCheck()
 
 mydb = mysql.connector.connect(
   host="uyu7j8yohcwo35j3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
@@ -87,10 +90,18 @@ def creator():
 @app.route('/create/<strat>',methods=['GET','POST'])
 def port_strat(strat):
     if request.method=='GET':
-        data=pf.data_collection()
+        pf.data_collection()
+
+        strategies_inscope(strat)  #tests if the strategy searched for  is supported
+
         pf_weights=pf.create_pf(strategy=strat)
-        portfolio=pf.pf_results(weights=pf_weights,returns=data)
-    return portfolio
+
+        weight_constraint(pf_weights) # test all weights sum up to 1
+
+        portfolio=pf.pf_results(weights=pf_weights)
+    return jsonify(portfolio)
+
+app.add_url_rule("/health", "healthcheck", view_func=lambda: health.run())
 
 if __name__ == "__main__":
         app.run(host='0.0.0.0')

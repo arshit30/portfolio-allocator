@@ -11,3 +11,8 @@ mysql-connector-python
 mysqlclient
 ConfigParser
 gunicorn
+pytest
+SQLAlchemy
+pymysql
+py-healthcheck
+healthcheck
